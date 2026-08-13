@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Jost, Playfair_Display } from "next/font/google";
+
+import { InlineScript } from "@/components/ui/inline-script";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -45,13 +47,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${playfair.variable} ${jost.variable}`}
       suppressHydrationWarning
     >
-      <head>
-        {/* Corre durante el parseo del HTML: aplica el tema guardado antes del
-            primer pintado, evitando el parpadeo al recargar. Va en <head> —
-            dentro de <body> React advierte que no ejecutará el script. */}
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-      </head>
-      <body>{children}</body>
+      <body>
+        <InlineScript html={themeInitScript} />
+        {children}
+      </body>
     </html>
   );
 }
